@@ -1,6 +1,6 @@
 #include <catch2/catch.hpp>
 
-#include <core/rename_this_file.h>
+#include <core/particle_controller.h>
 
 TEST_CASE("") {
 }

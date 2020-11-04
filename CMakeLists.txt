@@ -49,7 +49,6 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND CORE_SOURCE_FILES src/core/rename_this_file.cc)
 list(APPEND CORE_SOURCE_FILES src/core/particle_controller.cc)
 
 
@@ -57,7 +56,7 @@ list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
                             src/visualizer/ideal_gas_app.cc
                             src/visualizer/simulator.cc)
 
-list(APPEND TEST_FILES tests/rename_this_test_file.cc)
+list(APPEND TEST_FILES tests/test_particle_controller.cc)
 
 add_executable(ideal-gas-simulator apps/ideal_gas_simulation_main.cc ${CORE_SOURCE_FILES})
 target_include_directories(ideal-gas-simulator PRIVATE include)
