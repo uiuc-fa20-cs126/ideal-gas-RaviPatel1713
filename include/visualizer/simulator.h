@@ -3,6 +3,15 @@
 #include "cinder/gl/gl.h"
 
 namespace idealgas {
+using glm::vec2;
+
+struct Particle{
+  explicit Particle() = default;
+  explicit Particle(const vec2 &pos, const vec2 &vel) : pos_(pos), vel_(vel){}
+  vec2 pos_;
+  vec2 vel_;
+};
+
 
 namespace visualizer {
 
@@ -17,7 +26,7 @@ public:
    *
    * @param top_left_corner     the screen coordinates of the top left corner of
    *                            the simulator
-   * @param sketchpad_size      the side length of the sketchpad, measured in
+   * @param simulator_size      the size of the simulator, measured in
    *                            screen pixels
    */
   Simulator(const glm::vec2& top_left_corner, double simulator_size);
@@ -28,15 +37,24 @@ public:
   void Draw() const;
 
   /**
+   * Adds particles in the simulation window.
+   */
+  void AddParticles(const glm::vec2 &pos);
+
+  /**
+  * Updates the particle position according to their current velocity.
+  */
+  void UpdateParticlePosition();
+
+  /**
    * Erases all the particles in the simulator.
    */
   void Clear();
 
 private:
   glm::vec2 top_left_corner_;
-
-  /** Number of screen pixels in the width/height of one sketchpad pixel */
-  double pixel_side_length_;
+  double simulator_size_;
+  std::vector<Particle> particles;
 };
 
 }  // namespace visualizer
