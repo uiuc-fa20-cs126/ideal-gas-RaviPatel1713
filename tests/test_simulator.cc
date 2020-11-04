@@ -124,30 +124,64 @@ TEST_CASE("valid wall collisions with particle moving towards the wall") {
   }
 }
 
-TEST_CASE("invalid wall collisions with particle moving away from the wall") {
-
-}
-
 TEST_CASE("two particle collision") {
+  Simulator simulator = Simulator(glm::vec2(0,0),
+                                  200);
+  // horizontally moving particles towards each other
+  simulator.AddParticles(glm::vec2(100, 100), glm::vec2(5, 0));
+  simulator.AddParticles(glm::vec2(105, 100), glm::vec2(-5, 0));
+
+  // horizontally moving in same direction with left particle(higher velocity)
+  // colliding with right particle (lower velocity)
+  simulator.AddParticles(glm::vec2(100, 130), glm::vec2(5, 0));
+  simulator.AddParticles(glm::vec2(105, 130), glm::vec2(4, 0));
+
+  // vertically moving particles towards each other
+  simulator.AddParticles(glm::vec2(180, 180), glm::vec2(0, 5));
+  simulator.AddParticles(glm::vec2(180, 185), glm::vec2(0, -5));
+
+  // vertically moving in same direction with top particle(higher velocity)
+  // colliding with bottom particle (lower velocity)
+  simulator.AddParticles(glm::vec2(180, 130), glm::vec2(0, 5));
+  simulator.AddParticles(glm::vec2(180, 135), glm::vec2(0, 4));
+
+  simulator.UpdateParticlePosition(); // one frame iteration
   SECTION("particle collision moving horizontally"){
     SECTION("particles moving towards each other"){
-
+      glm::vec2 result_vel = glm::vec2(-5, 0);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(0).vel_.x) == result_vel.x);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(0).vel_.y) == result_vel.y);
+      result_vel = glm::vec2(5, 0);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(1).vel_.x) == result_vel.x);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(1).vel_.y) == result_vel.y);
     }
     SECTION("particles moving in the same direction with differing velocities"){
-
+      glm::vec2 result_vel = glm::vec2(4, 0);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(2).vel_.x) == result_vel.x);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(2).vel_.y) == result_vel.y);
+      result_vel = glm::vec2(5, 0);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(3).vel_.x) == result_vel.x);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(3).vel_.y) == result_vel.y);
     }
   }
   SECTION("particle collision moving vertically"){
     SECTION("particles moving towards each other"){
-
+      glm::vec2 result_vel = glm::vec2(0, -5);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(4).vel_.x) == result_vel.x);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(4).vel_.y) == result_vel.y);
+      result_vel = glm::vec2(0, 5);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(5).vel_.x) == result_vel.x);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(5).vel_.y) == result_vel.y);
     }
     SECTION("particles moving in the same direction with differing velocities"){
-
+      glm::vec2 result_vel = glm::vec2(0, 4);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(6).vel_.x) == result_vel.x);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(6).vel_.y) == result_vel.y);
+      result_vel = glm::vec2(0, 5);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(7).vel_.x) == result_vel.x);
+      REQUIRE(Approx(simulator.GetParticlesVector().at(7).vel_.y) == result_vel.y);
     }
   }
 }
 
-TEST_CASE("invalid wall collisions with particle moving away from the wall") {
-
-}
 
