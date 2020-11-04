@@ -7,7 +7,7 @@ namespace visualizer {
 using glm::vec2;
 
 Simulator::Simulator(const vec2 &top_left_corner, double simulator_size)
-    : top_left_corner_(top_left_corner), simulator_size_(simulator_size) {
+    : top_left_corner_(top_left_corner), simulator_size_(simulator_size), particle_starting_vel_(glm::vec2(5, 5)){
 }
 
 
@@ -21,7 +21,7 @@ void Simulator::Draw() const {
 
   for(int i = 0; i < particles.size(); ++i){
     ci::gl::color(ci::Color("red"));
-    ci::gl::drawSolidCircle(particles[i].pos_, 7);
+    ci::gl::drawSolidCircle(particles[i].pos_, 1);
   }
 }
 
@@ -39,6 +39,11 @@ void Simulator::AddParticles(const glm::vec2 &pos) {
                            glm::vec2(5, 5));
   }
 }
+
+void Simulator::AddParticles(const vec2 &pos, const glm::vec2 &vel) {
+  particles.emplace_back(pos, vel);
+}
+
 void Simulator::UpdateParticlePosition() {
   for(int i = 0; i < particles.size(); ++i){
     if (particles[i].pos_.x - 7 <= top_left_corner_.x &&
@@ -80,6 +85,17 @@ void Simulator::UpdateParticlePosition() {
     }
     particles[i].pos_ +=  particles[i].vel_;
   }
+}
+double Simulator::GteSimulatorSize() const {
+  return simulator_size_;
+}
+
+const std::vector<Particle> &Simulator::GetParticlesVector() const {
+  return particles;
+}
+
+void Simulator::SetParticleStartingVelocity(double x_dir, double y_dir) {
+  particle_starting_vel_ = glm::vec2(x_dir, y_dir);
 }
 
 }  // namespace visualizer

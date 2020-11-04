@@ -6,9 +6,9 @@ namespace visualizer {
 
 IdealGasApp::IdealGasApp()
     : simulator_(glm::vec2(kMargin, kMargin),
-                 kWindowSize - 2 * kMargin) {
-  ci::app::setWindowSize((int) kWindowSize,
-                         (int) kWindowSize);
+                 600) {
+  ci::app::setWindowSize((int) kWindowWidth,
+                         (int) kWindowHeight);
 }
 
 void IdealGasApp::draw() {

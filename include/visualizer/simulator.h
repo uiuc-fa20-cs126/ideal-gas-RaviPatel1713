@@ -37,9 +37,17 @@ public:
   void Draw() const;
 
   /**
-   * Adds particles in the simulation window.
+   * Adds particles with current cursor position and default velocity in the
+   * simulation window.
    */
   void AddParticles(const glm::vec2 &pos);
+
+  /**
+   * Adds particles with specified position and velocity in the simulation window.
+   * Used for testing purposes.
+   */
+  void AddParticles(const glm::vec2 &pos, const glm::vec2 &vel);
+
 
   /**
   * Updates the particle position according to their current velocity.
@@ -51,10 +59,17 @@ public:
    */
   void Clear();
 
+  double GteSimulatorSize() const;
+
+  const std::vector<Particle> &GetParticlesVector() const;
+
+  void SetParticleStartingVelocity(double x_dir, double y_dir);
+
 private:
   glm::vec2 top_left_corner_;
   double simulator_size_;
   std::vector<Particle> particles;
+  glm::vec2 particle_starting_vel_;
 };
 
 }  // namespace visualizer

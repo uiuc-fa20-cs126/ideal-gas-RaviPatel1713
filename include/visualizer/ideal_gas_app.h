@@ -21,8 +21,10 @@ class IdealGasApp : public ci::app::App {
   void update() override;
   void mouseDown(ci::app::MouseEvent event) override;
 
-  const double kWindowSize = 875;
-  const double kMargin = 100;
+  const double kWindowWidth = 1000;
+  const double kWindowHeight = 800;
+
+  const double kMargin = 60;
  private:
   Simulator simulator_;
 };
