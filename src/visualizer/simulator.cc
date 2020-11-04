@@ -18,15 +18,42 @@ void Simulator::Draw() const {
   ci::gl::drawStrokedRect(pixel_bounding_box);
   ci::gl::color(ci::Color("black"));
   ci::gl::drawStrokedRect(pixel_bounding_box);
+
+  for(int i = 0; i < particles.size(); ++i){
+    ci::gl::color(ci::Color("red"));
+    ci::gl::drawSolidCircle(particles[i].pos_, 7);
+  }
 }
 
 void Simulator::Clear() {
-
+  particles.clear();
 }
 
 void Simulator::AddParticles(const glm::vec2 &pos) {
+  // checks bounds
 }
 void Simulator::UpdateParticlePosition() {
+  for(int i = 0; i < particles.size(); ++i){
+    if (particles[i].pos_.x - 7 <= top_left_corner_.x &&
+        particles[i].vel_.x < 0){
+      particles[i].vel_.x = -1 * particles[i].vel_.x;
+    }
+    else if (particles[i].pos_.x + 7 >= top_left_corner_.x + simulator_size_&&
+        particles[i].vel_.x > 0){
+      particles[i].vel_.x = -1 * particles[i].vel_.x;
+    }
+
+    if (particles[i].pos_.y - 7 <= top_left_corner_.y &&
+        particles[i].vel_.y < 0){
+      particles[i].vel_.y = -1 * particles[i].vel_.y;
+    }
+    else if (particles[i].pos_.y + 7 >= top_left_corner_.y + simulator_size_&&
+        particles[i].vel_.y > 0){
+      particles[i].vel_.y = -1 * particles[i].vel_.y;
+    }
+
+    particles[i].pos_ +=  particles[i].vel_;
+  }
 }
 
 }  // namespace visualizer
