@@ -78,9 +78,6 @@ void Simulator::UpdateParticlePosition() {
                                        ratio2 * pos1_diff_pos2.y);
       }
     }
-
-
-
     particles[i].pos_ +=  particles[i].vel_;
   }
 }
