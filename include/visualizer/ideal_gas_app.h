@@ -24,7 +24,7 @@ class IdealGasApp : public ci::app::App {
   const double kWindowWidth = 1200;
   const double kWindowHeight = 800;
 
-  const double kMargin = 60;
+  const double kMargin = 50;
  private:
   Simulator simulator_;
 };
