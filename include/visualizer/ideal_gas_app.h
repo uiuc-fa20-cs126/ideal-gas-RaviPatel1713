@@ -21,7 +21,7 @@ class IdealGasApp : public ci::app::App {
   void update() override;
   void mouseDown(ci::app::MouseEvent event) override;
 
-  const double kWindowWidth = 1000;
+  const double kWindowWidth = 1200;
   const double kWindowHeight = 800;
 
   const double kMargin = 60;

@@ -49,7 +49,12 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND CORE_SOURCE_FILES src/core/particle_controller.cc)
+list(APPEND CORE_SOURCE_FILES src/core/histogram.cc)
+list(APPEND CORE_SOURCE_FILES src/core/particle.cc)
+list(APPEND CORE_SOURCE_FILES src/core/particle_modifier.cc)
+list(APPEND CORE_SOURCE_FILES src/core/polygon_container.cc)
+list(APPEND CORE_SOURCE_FILES src/core/simulator_config.cc)
+list(APPEND CORE_SOURCE_FILES src/core/sqr_container.cc)
 
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}

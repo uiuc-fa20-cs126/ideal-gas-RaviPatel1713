@@ -5,9 +5,11 @@ namespace idealgas {
 namespace visualizer {
 
 using glm::vec2;
+using cinder::Path2d;
 
 Simulator::Simulator(const vec2 &top_left_corner, double simulator_size)
-    : top_left_corner_(top_left_corner), simulator_size_(simulator_size), particle_starting_vel_(glm::vec2(5, 5)){
+    : top_left_corner_(top_left_corner), simulator_size_(simulator_size),
+      particle_starting_vel_(glm::vec2(5, 5)){
 }
 
 
@@ -19,9 +21,18 @@ void Simulator::Draw() const {
   ci::gl::color(ci::Color("black"));
   ci::gl::drawStrokedRect(pixel_bounding_box);
 
+  Path2d mPath;
+  mPath.moveTo( vec2( 300.0f, 270.0f ) );
+  mPath.curveTo(vec2( 400.0f, 270.0f ),
+                vec2( 400.0f, 70.0f ),
+                vec2( 500.0f, 70.0f ) );
+  ci::gl::draw( mPath );
+
+
+
   for(int i = 0; i < particles.size(); ++i){
     ci::gl::color(ci::Color("red"));
-    ci::gl::drawSolidCircle(particles[i].pos_, 1);
+    ci::gl::drawSolidCircle(particles[i].pos_, 5);
   }
 }
 
@@ -52,7 +63,8 @@ void Simulator::UpdateParticlePosition() {
     }
     else if (particles[i].pos_.x + 7 >= top_left_corner_.x + simulator_size_&&
         particles[i].vel_.x > 0){
-      particles[i].vel_.x = -1 * particles[i].vel_.x;
+      //
+      particles[i].vel_.x *= -1;
     }
 
     if (particles[i].pos_.y - 7 <= top_left_corner_.y &&

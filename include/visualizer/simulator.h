@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cinder/gl/gl.h"
+#include <cinder/Path2d.h>
 
 namespace idealgas {
 using glm::vec2;
