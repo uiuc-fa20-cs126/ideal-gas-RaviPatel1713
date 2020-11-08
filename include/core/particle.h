@@ -3,21 +3,24 @@
 #include "ideal_gas_app_config.h"
 namespace idealgas{
 using glm::vec2;
-class Particle{
+class Particle {
 public:
   Particle() = default;
-  Particle(const vec2 &pos, const vec2 &vel);
-  Particle (const vec2 &pos, const vec2 &vel,
-            const double mass, const double radius);
-  bool Collide(const Particle *other) const;
+  Particle(const vec2 &pos, const vec2 &vel, double mass, double radius,
+           const ci::Color color);
+  bool Collide(const Particle &other) const;
 
-  void UpdateParticlePosition(Particle *other);
+  void UpdateVelocity(Particle &other);
 
+  void Draw() const;
+
+  void UpdatePosition();
+
+  vec2 &GetPos();
 
 private:
-  vec2 pos_;
-  vec2 vel_;
-  double mass_;
-  double radius_;
+  vec2 pos_, vel_;
+  double mass_, radius_;
+  ci::Color color_;
 };
 }

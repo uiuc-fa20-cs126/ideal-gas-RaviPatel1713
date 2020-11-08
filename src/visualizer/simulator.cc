@@ -19,6 +19,9 @@ Simulator::Simulator(double window_width,
                       + vec2(container_size_/2, container_size_/2));
   container_ = SqrContainer(polygon_center,container_size_/2);
   std::cout << window_height_ << std::endl;
+  particle_modifier_ = ParticleModifier(vec2(620, 350),
+                                        vec2(280, 380));
+
 }
 
 
@@ -52,14 +55,21 @@ void Simulator::renderContent() const {
   ci::gl::drawStrokedRect(pixel_bounding_box);
   ci::gl::color(ci::Color("black"));
   ci::gl::drawStrokedRect(pixel_bounding_box);
+
+  pixel_top_left = vec2(620, 350);
+  pixel_bottom_right = pixel_top_left + vec2(280, 380);
+  pixel_bounding_box  = ci::Rectf(pixel_top_left, pixel_bottom_right);
+  ci::gl::drawStrokedRect(pixel_bounding_box);
+  ci::gl::color(ci::Color("black"));
+  ci::gl::drawStrokedRect(pixel_bounding_box);
 }
 
 void Simulator::Draw() const {
   PrintAppTitle();
   renderContent();
   container_.Draw();
+  particle_modifier_.DrawParticleModifierSection();
 
-  //particle_modifier_.Draw();
   /*
    for(hist: histograms){
     hist.Draw();
@@ -96,6 +106,11 @@ void Simulator::Clear() {
 
 
 void Simulator::UpdateSimulation() {
+  container_.Update();
+}
+
+void Simulator::AddParticlesToContainer() {
+  container_.AddParticles(vec2(350, 350));
 }
 
 }  // namespace visualizer

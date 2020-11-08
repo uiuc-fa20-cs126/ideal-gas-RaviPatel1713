@@ -48,6 +48,11 @@ void IdealGasApp::mouseDown(ci::app::MouseEvent event) {
     //TODO: add funtionality for simulation changes
     return;
 }
+void IdealGasApp::keyDown(ci::app::KeyEvent event) {
+  if( event.getCode() == ci::app::KeyEvent::KEY_SPACE ) {
+    simulator_.AddParticlesToContainer();
+  }
+}
 }  // namespace visualizer
 
 }  // namespace idealgas

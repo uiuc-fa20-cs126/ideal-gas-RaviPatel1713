@@ -17,13 +17,13 @@ const double kMass = 40.0f;
 const double kMargin = 50.0f;
 } // namespace standard_config
 
-namespace container {
-enum polygon_type {
-  kTriangle,
-  kSquare,
-  kPentagon,
-  kHexagon,
-};
+namespace particle_config{
+const double kMinMass = 10.0f,
+             kMaxMass = 40.0f;
+const double kMinRadius = 2.0f,
+             kMaxRadius = 8.0f;
+const double kMinVelocity = 4.0f,
+             kMaxVelocity = 10.0f;
 }
 
 } // namespace idealgas

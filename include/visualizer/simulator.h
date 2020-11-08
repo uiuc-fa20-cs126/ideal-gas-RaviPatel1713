@@ -43,6 +43,8 @@ public:
    */
   void Clear();
 
+  void AddParticlesToContainer();
+
 private:
   // private methods for rendering app title and other background components
   void PrintAppTitle() const;
@@ -53,7 +55,7 @@ private:
   vec2 container_top_left_corner_;
   double container_size_;
   SqrContainer container_;
-//  ParticleModifier particle_modifier_;
+  ParticleModifier particle_modifier_;
 };
 
 }  // namespace visualizer

@@ -22,7 +22,9 @@ class IdealGasApp : public ci::app::App {
   void draw() override;
   void update() override;
   void mouseDown(ci::app::MouseEvent event) override;
- private:
+  void keyDown(ci::app::KeyEvent event) override;
+
+private:
   Simulator simulator_;
   AppButton reset_button_;
   AppButton pause_button_; // pause and unpause in the same button
