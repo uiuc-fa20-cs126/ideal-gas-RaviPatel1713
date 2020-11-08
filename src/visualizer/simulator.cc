@@ -24,7 +24,7 @@ Simulator::Simulator(double window_width,
 
 void Simulator::PrintAppTitle() const {
   ci::gl::drawStringCentered(
-      "IDEAL GAS SIMULATION",
+      "Ideal Gas Simulation",
       glm::vec2(
           window_width_ / 2,
           container_top_left_corner_.x / 2), // window margin
@@ -40,6 +40,13 @@ void Simulator::renderContent() const {
   ci::gl::drawStrokedRect(pixel_bounding_box);
 
   pixel_top_left += vec2(container_top_left_corner_.x + 200, 0);
+  pixel_bottom_right = pixel_top_left + vec2(230, 230);
+  pixel_bounding_box  = ci::Rectf(pixel_top_left, pixel_bottom_right);
+  ci::gl::drawStrokedRect(pixel_bounding_box);
+  ci::gl::color(ci::Color("black"));
+  ci::gl::drawStrokedRect(pixel_bounding_box);
+
+  pixel_top_left += vec2(0, 250);
   pixel_bottom_right = pixel_top_left + vec2(230, 230);
   pixel_bounding_box  = ci::Rectf(pixel_top_left, pixel_bottom_right);
   ci::gl::drawStrokedRect(pixel_bounding_box);
@@ -84,6 +91,7 @@ void Simulator::Draw() const {
 }
 
 void Simulator::Clear() {
+
 }
 
 
