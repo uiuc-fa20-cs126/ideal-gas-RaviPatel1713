@@ -1,5 +1,8 @@
 #pragma  once
 
-namespace ideal_gas{
+namespace idealgas{
 
+class ParticleModifier{
+
+};
 }

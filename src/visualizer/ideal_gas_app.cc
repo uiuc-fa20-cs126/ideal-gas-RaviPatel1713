@@ -5,29 +5,34 @@ namespace idealgas {
 namespace visualizer {
 
 IdealGasApp::IdealGasApp()
-    : simulator_(glm::vec2(kMargin, kMargin),
-                 600) {
-  ci::app::setWindowSize((int) kWindowWidth,
-                         (int) kWindowHeight);
+    : simulator_(idealgas::standard_config::kWindowWidth,
+                 idealgas::standard_config::kWindowHeight,
+                 glm::vec2(idealgas::standard_config::kMargin,
+                                idealgas::standard_config::kMargin),
+          idealgas::standard_config::kContainerSize) {
+  ci::app::setWindowSize((int) idealgas::standard_config::kWindowWidth,
+                         (int) idealgas::standard_config::kWindowHeight);
+}
+
+void IdealGasApp::setup() {
+//  AppBase::setup();
 }
 
 void IdealGasApp::draw() {
-  ci::Color8u background_color(255,
-                               246,
-                               148);  // light yellow
+  ci::Color8u background_color(255,246,148);  // light yellow
   ci::gl::clear(background_color);
 
-  // call simulator Draw() method here
   simulator_.Draw();
 }
 
 void IdealGasApp::update() {
-  simulator_.UpdateParticlePosition();
+//  simulator_.UpdateSimulation();
 }
 
 void IdealGasApp::mouseDown(ci::app::MouseEvent event) {
-  simulator_.AddParticles(event.getPos());
+//  simulator_.AddParticles(event.getPos());
 }
+
 
 }  // namespace visualizer
 

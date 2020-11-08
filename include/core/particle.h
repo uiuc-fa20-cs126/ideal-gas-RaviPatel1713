@@ -2,7 +2,7 @@
 #include "cinder/gl/gl.h"
 using glm::vec2;
 
-namespace ideal_gas{
+namespace idealgas{
 class Particle{
 public:
   Particle() = default;

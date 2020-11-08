@@ -4,6 +4,7 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "simulator.h"
+#include "core/ideal_gas_app_config.h"
 
 namespace idealgas {
 
@@ -16,17 +17,13 @@ namespace visualizer {
 class IdealGasApp : public ci::app::App {
  public:
   IdealGasApp();
-
+  void setup() override;
   void draw() override;
   void update() override;
   void mouseDown(ci::app::MouseEvent event) override;
-
-  const double kWindowWidth = 1200;
-  const double kWindowHeight = 800;
-
-  const double kMargin = 50;
  private:
   Simulator simulator_;
+//  std::vector<Histogram> h
 };
 
 }  // namespace visualizer

@@ -2,19 +2,12 @@
 
 #include "cinder/gl/gl.h"
 #include <cinder/Path2d.h>
-
+#include "core/polygon_container.h"
+#include "core/particle_modifier.h"
+#include "core/sqr_container.h"
 namespace idealgas {
-using glm::vec2;
-
-struct Particle{
-  explicit Particle() = default;
-  explicit Particle(const vec2 &pos, const vec2 &vel) : pos_(pos), vel_(vel){}
-  vec2 pos_;
-  vec2 vel_;
-};
-
-
 namespace visualizer {
+using glm::vec2;
 
 /**
  * A simulator which render the particles movements and positioning in an ideal
@@ -30,7 +23,10 @@ public:
    * @param simulator_size      the size of the simulator, measured in
    *                            screen pixels
    */
-  Simulator(const glm::vec2& top_left_corner, double simulator_size);
+  Simulator(double window_width,
+            double window_height,
+            const glm::vec2& top_left_corner,
+            double simulator_size);
 
   /**
    * Displays the current state of the simulator in the Cinder application.
@@ -38,39 +34,26 @@ public:
   void Draw() const;
 
   /**
-   * Adds particles with current cursor position and default velocity in the
-   * simulation window.
-   */
-  void AddParticles(const glm::vec2 &pos);
-
-  /**
-   * Adds particles with specified position and velocity in the simulation window.
-   * Used for testing purposes.
-   */
-  void AddParticles(const glm::vec2 &pos, const glm::vec2 &vel);
-
-
-  /**
-  * Updates the particle position according to their current velocity.
+  * Updates the particle positions and other simulation content.
   */
-  void UpdateParticlePosition();
+  void UpdateSimulation();
 
   /**
    * Erases all the particles in the simulator.
    */
   void Clear();
 
-  double GteSimulatorSize() const;
-
-  const std::vector<Particle> &GetParticlesVector() const;
-
-  void SetParticleStartingVelocity(double x_dir, double y_dir);
-
 private:
-  glm::vec2 top_left_corner_;
-  double simulator_size_;
-  std::vector<Particle> particles;
-  glm::vec2 particle_starting_vel_;
+  // private methods for rendering app title and other background components
+  void PrintAppTitle() const;
+  void renderContent() const;
+
+  const double window_width_;
+  const double window_height_;
+  vec2 container_top_left_corner_;
+  double container_size_;
+  SqrContainer container_;
+//  ParticleModifier particle_modifier_;
 };
 
 }  // namespace visualizer

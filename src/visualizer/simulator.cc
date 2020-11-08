@@ -7,107 +7,87 @@ namespace visualizer {
 using glm::vec2;
 using cinder::Path2d;
 
-Simulator::Simulator(const vec2 &top_left_corner, double simulator_size)
-    : top_left_corner_(top_left_corner), simulator_size_(simulator_size),
-      particle_starting_vel_(glm::vec2(5, 5)){
+Simulator::Simulator(double window_width,
+                     double window_height,
+                     const vec2 &top_left_corner,
+                     double container_size)
+      : window_width_(window_width)
+      , window_height_(window_height)
+      , container_top_left_corner_(top_left_corner)
+      , container_size_(container_size){
+  vec2 polygon_center(container_top_left_corner_
+                      + vec2(container_size_/2, container_size_/2));
+  container_ = SqrContainer(polygon_center,container_size_/2);
+  std::cout << window_height_ << std::endl;
 }
 
 
-void Simulator::Draw() const {
-  vec2 pixel_bottom_right =
-      top_left_corner_ + vec2(simulator_size_, simulator_size_);
-  ci::Rectf pixel_bounding_box(top_left_corner_, pixel_bottom_right);
+void Simulator::PrintAppTitle() const {
+  ci::gl::drawStringCentered(
+      "IDEAL GAS SIMULATION",
+      glm::vec2(
+          window_width_ / 2,
+          container_top_left_corner_.x / 2), // window margin
+      ci::Color("black"));
+}
+void Simulator::renderContent() const {
+  vec2 pixel_top_left = vec2(2 * container_top_left_corner_.x + container_size_,
+                                 container_top_left_corner_.x);
+  vec2 pixel_bottom_right = pixel_top_left + vec2(230, 230);
+  ci::Rectf pixel_bounding_box(pixel_top_left, pixel_bottom_right);
   ci::gl::drawStrokedRect(pixel_bounding_box);
   ci::gl::color(ci::Color("black"));
   ci::gl::drawStrokedRect(pixel_bounding_box);
 
-  Path2d mPath;
-  mPath.moveTo( vec2( 300.0f, 270.0f ) );
-  mPath.curveTo(vec2( 400.0f, 270.0f ),
-                vec2( 400.0f, 70.0f ),
-                vec2( 500.0f, 70.0f ) );
-  ci::gl::draw( mPath );
+  pixel_top_left += vec2(container_top_left_corner_.x + 200, 0);
+  pixel_bottom_right = pixel_top_left + vec2(230, 230);
+  pixel_bounding_box  = ci::Rectf(pixel_top_left, pixel_bottom_right);
+  ci::gl::drawStrokedRect(pixel_bounding_box);
+  ci::gl::color(ci::Color("black"));
+  ci::gl::drawStrokedRect(pixel_bounding_box);
+}
+
+void Simulator::Draw() const {
+  PrintAppTitle();
+  renderContent();
+  container_.Draw();
+
+  //particle_modifier_.Draw();
+  /*
+   for(hist: histograms){
+    hist.Draw();
+   }
+   */
+
+/*
+//  vec2 pixel_bottom_right =
+//      container_top_left_corner_ + vec2(simulator_size_, simulator_size_);
+//  ci::Rectf pixel_bounding_box(top_left_corner_, pixel_bottom_right);
+//  ci::gl::drawStrokedRect(pixel_bounding_box);
+//  ci::gl::color(ci::Color("black"));
+//  ci::gl::drawStrokedRect(pixel_bounding_box);
+
+//  Path2d mPath;
+//  mPath.moveTo( vec2( 300.0f, 270.0f ) );
+//  mPath.curveTo(vec2( 400.0f, 270.0f ),
+//                vec2( 400.0f, 70.0f ),
+//                vec2( 500.0f, 70.0f ) );
+//  ci::gl::draw( mPath );
 
 
 
-  for(int i = 0; i < particles.size(); ++i){
-    ci::gl::color(ci::Color("red"));
-    ci::gl::drawSolidCircle(particles[i].pos_, 5);
-  }
+//  for(int i = 0; i < particles.size(); ++i){
+//    ci::gl::color(ci::Color("red"));
+//    ci::gl::drawSolidCircle(particles[i].pos_, 5);
+//  }
+  */
 }
 
 void Simulator::Clear() {
-  particles.clear();
 }
 
-void Simulator::AddParticles(const glm::vec2 &pos) {
-  // checks bounds
-  if (pos.x > top_left_corner_.x &&
-      pos.x < top_left_corner_.x + simulator_size_ &&
-      pos.y > top_left_corner_.y &&
-      pos.y < top_left_corner_.y + simulator_size_){
-    particles.emplace_back(glm::vec2(pos.x, pos.y),
-                           glm::vec2(5, 5));
-  }
-}
 
-void Simulator::AddParticles(const vec2 &pos, const glm::vec2 &vel) {
-  particles.emplace_back(pos, vel);
-}
-
-void Simulator::UpdateParticlePosition() {
-  for(int i = 0; i < particles.size(); ++i){
-    if (particles[i].pos_.x - 7 <= top_left_corner_.x &&
-        particles[i].vel_.x < 0){
-      particles[i].vel_.x = -1 * particles[i].vel_.x;
-    }
-    else if (particles[i].pos_.x + 7 >= top_left_corner_.x + simulator_size_&&
-        particles[i].vel_.x > 0){
-      //
-      particles[i].vel_.x *= -1;
-    }
-
-    if (particles[i].pos_.y - 7 <= top_left_corner_.y &&
-        particles[i].vel_.y < 0){
-      particles[i].vel_.y = -1 * particles[i].vel_.y;
-    }
-    else if (particles[i].pos_.y + 7 >= top_left_corner_.y + simulator_size_&&
-        particles[i].vel_.y > 0){
-      particles[i].vel_.y = -1 * particles[i].vel_.y;
-    }
-    for(int j = 0; j < particles.size(); ++j){
-      glm::vec2 vec1_diff_vec2 = particles[i].vel_ - particles[j].vel_;
-      glm::vec2 pos1_diff_pos2 = particles[i].pos_ - particles[j].pos_;
-      if(glm::distance(particles[i].pos_, particles[j].pos_) <= 14 &&
-         glm::dot(vec1_diff_vec2, pos1_diff_pos2) < 0){
-        double length_sqr = pow(glm::length(pos1_diff_pos2), 2.0);
-
-        // velocity calculator for particle 1
-        double ratio1 = glm::dot(vec1_diff_vec2, pos1_diff_pos2)/ length_sqr;
-        particles[i].vel_ -= glm::vec2(ratio1 * pos1_diff_pos2.x,
-                                       ratio1 * pos1_diff_pos2.y);
-
-        // velocity calculator for particle 2
-        vec1_diff_vec2.x *= -1; vec1_diff_vec2.y *= -1;
-        pos1_diff_pos2.x *= -1; pos1_diff_pos2.y *= -1;
-        double ratio2 = glm::dot(vec1_diff_vec2, pos1_diff_pos2)/ length_sqr;
-        particles[j].vel_ -= glm::vec2(ratio2 * pos1_diff_pos2.x,
-                                       ratio2 * pos1_diff_pos2.y);
-      }
-    }
-    particles[i].pos_ +=  particles[i].vel_;
-  }
-}
-double Simulator::GteSimulatorSize() const {
-  return simulator_size_;
-}
-
-const std::vector<Particle> &Simulator::GetParticlesVector() const {
-  return particles;
-}
-
-void Simulator::SetParticleStartingVelocity(double x_dir, double y_dir) {
-  particle_starting_vel_ = glm::vec2(x_dir, y_dir);
+void Simulator::UpdateSimulation() {
 }
 
 }  // namespace visualizer
