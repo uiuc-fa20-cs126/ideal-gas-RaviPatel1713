@@ -21,6 +21,8 @@ public:
 
   void SetVel(const vec2 &v);
 
+  double GetMass() const;
+
 private:
   vec2 pos_, vel_;
   double mass_, radius_;

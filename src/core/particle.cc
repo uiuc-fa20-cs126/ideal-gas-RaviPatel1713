@@ -48,6 +48,8 @@ vec2 Particle::GetPos() const { return pos_; }
 vec2 Particle::GetVel() const { return vel_; }
 void Particle::SetVel(const vec2 &v) { vel_ = v;}
 
+double Particle::GetMass() const { return mass_; }
+
 }
 
 

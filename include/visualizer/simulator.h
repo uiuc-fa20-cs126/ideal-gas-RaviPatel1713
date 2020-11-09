@@ -3,6 +3,7 @@
 #include "cinder/gl/gl.h"
 #include "core/container.h"
 #include <cinder/Path2d.h>
+#include "core/histogram.h"
 namespace idealgas {
 namespace visualizer {
 using glm::vec2;
@@ -55,6 +56,7 @@ private:
   vec2 container_top_left_corner_;
   double container_size_;
   Container container_;
+  std::vector<Histogram> histograms;
 };
 
 }  // namespace visualizer
