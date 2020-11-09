@@ -1,15 +1,14 @@
-#include <core/sqr_container.h>
+#include <core/container.h>
 
 namespace idealgas {
 using cinder::Path2d;
 using glm::vec2;
-#define PI 3.14159265
-#define INF standard_config::kWindowWidth
 
-SqrContainer::SqrContainer(const vec2 &centroid, const double polygon_radius)
+#define PI 3.14159265
+
+Container::Container(const vec2 &centroid, const double polygon_radius)
     : centroid_(centroid), polygon_radius_(polygon_radius) {
   shape = 6;
-//    double current_degree = -PI/2;
   double current_degree = (shape%2 == 0) ? 2 * PI - PI / shape : -PI/2;
 
   for (unsigned i = 0; i < shape; ++i) {
@@ -21,7 +20,7 @@ SqrContainer::SqrContainer(const vec2 &centroid, const double polygon_radius)
   }
 }
 
-void SqrContainer::Draw() const {
+void Container::Draw() const {
   Path2d mPath;
   mPath.moveTo(polygon_vertices_[0]);
   for (unsigned i = 1; i < shape; ++i) {
@@ -36,24 +35,23 @@ void SqrContainer::Draw() const {
   }
 }
 
-void SqrContainer::AddParticles(const vec2 &c) {
-  particles.emplace_back(c, vec2( 2 , 6), 20, 7, "red");
+void Container::AddParticles(const vec2 &c) {
+  particles.emplace_back(c, vec2( 2 , 1), 20, 7, "red");
 }
 
-void SqrContainer::Update() {
+void Container::Update() {
   for (int i = 0; i < particles.size(); ++i) {
-    if (!WallCollisionDetected(particles[i])){
-      for (int j = i; j < particles.size(); ++j) {
-        if (particles[i].Collide(particles[j])) {
-          particles[i].UpdateVelocity(particles[j]);
-        }
+    WallCollisionDetected(particles[i]);
+    for (int j = i + 1; j < particles.size(); ++j) {
+      if (particles[i].Collide(particles[j])) {
+        particles[i].UpdateVelocity(particles[j]);
       }
     }
     particles[i].UpdatePosition();
   }
 }
 
-bool SqrContainer::WallCollisionDetected(Particle &particle) {
+bool Container::WallCollisionDetected(Particle &particle) {
   vec2 p = particle.GetPos(),
        v = particle.GetVel();
 
@@ -66,7 +64,7 @@ bool SqrContainer::WallCollisionDetected(Particle &particle) {
     double n_length = glm::length(n);
     n = vec2(n.x / n_length, n.y / n_length);
 
-    if(!Inside(polygon_vertices_[next], p, polygon_vertices_[i]) &&
+    if(!Inside(polygon_vertices_[i], p, polygon_vertices_[next]) &&
         glm::dot(n, v) <  0){
       particle.SetVel(glm::reflect(v, n));
       return false;
@@ -77,9 +75,9 @@ bool SqrContainer::WallCollisionDetected(Particle &particle) {
   return true;
 }
 
-bool SqrContainer::Inside(const vec2 &p_0, const vec2 &p, const vec2 &p_1) {
-  return ((p.y - p_0.y) * (p_1.x - p_0.x) -
-          (p.x - p_0.x) * (p_1.y - p_0.y)) >= 0;
+bool Container::Inside(const vec2 &p_0, const vec2 &p, const vec2 &p_1) {
+  return ((p.y - p_1.y) * (p_0.x - p_1.x) -
+          (p.x - p_1.x) * (p_0.y - p_1.y)) >= 0;
 }
 
 } // namespace idealgas

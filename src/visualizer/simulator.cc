@@ -17,10 +17,10 @@ Simulator::Simulator(double window_width,
       , container_size_(container_size){
   vec2 polygon_center(container_top_left_corner_
                       + vec2(container_size_/2, container_size_/2));
-  container_ = SqrContainer(polygon_center,container_size_/2);
+  container_ = Container(polygon_center,container_size_/2);
 
 
-  particle_modifier_ = ParticleModifier(vec2(620, 350),
+  particle_settings_ = AppParamSettings(vec2(620, 350),
                                         vec2(280, 380));
 
 }
@@ -56,20 +56,13 @@ void Simulator::renderContent() const {
   ci::gl::drawStrokedRect(pixel_bounding_box);
   ci::gl::color(ci::Color("black"));
   ci::gl::drawStrokedRect(pixel_bounding_box);
-
-  pixel_top_left = vec2(620, 350);
-  pixel_bottom_right = pixel_top_left + vec2(280, 380);
-  pixel_bounding_box  = ci::Rectf(pixel_top_left, pixel_bottom_right);
-  ci::gl::drawStrokedRect(pixel_bounding_box);
-  ci::gl::color(ci::Color("black"));
-  ci::gl::drawStrokedRect(pixel_bounding_box);
 }
 
 void Simulator::Draw() const {
   PrintAppTitle();
   renderContent();
   container_.Draw();
-  particle_modifier_.DrawParticleModifierSection();
+  particle_settings_.DrawParticleModifierSection();
 
   /*
    for(hist: histograms){

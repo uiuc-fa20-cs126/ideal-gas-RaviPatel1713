@@ -52,9 +52,9 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 list(APPEND CORE_SOURCE_FILES src/core/app_button.cc)
 list(APPEND CORE_SOURCE_FILES src/core/histogram.cc)
 list(APPEND CORE_SOURCE_FILES src/core/particle.cc)
-list(APPEND CORE_SOURCE_FILES src/core/particle_modifier.cc)
+list(APPEND CORE_SOURCE_FILES src/core/app_param_settings.cc)
 list(APPEND CORE_SOURCE_FILES src/core/ideal_gas_app_config.cc)
-list(APPEND CORE_SOURCE_FILES src/core/sqr_container.cc)
+list(APPEND CORE_SOURCE_FILES src/core/container.cc)
 
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}

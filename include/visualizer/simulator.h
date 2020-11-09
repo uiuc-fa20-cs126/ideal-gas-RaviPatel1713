@@ -1,10 +1,9 @@
 #pragma once
 
 #include "cinder/gl/gl.h"
+#include "core/app_param_settings.h"
+#include "core/container.h"
 #include <cinder/Path2d.h>
-#include "core/polygon_container.h"
-#include "core/particle_modifier.h"
-#include "core/sqr_container.h"
 namespace idealgas {
 namespace visualizer {
 using glm::vec2;
@@ -54,8 +53,8 @@ private:
 //  const double window_height_;
   vec2 container_top_left_corner_;
   double container_size_;
-  SqrContainer container_;
-  ParticleModifier particle_modifier_;
+  Container container_;
+  AppParamSettings particle_settings_;
 };
 
 }  // namespace visualizer

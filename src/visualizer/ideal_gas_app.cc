@@ -22,6 +22,18 @@ void IdealGasApp::setup() {
 
   current_button_pos -= vec2(100, 0);
   pause_button_ = AppButton("Pause", current_button_pos, button_size);
+
+  mParams = ci::params::InterfaceGl::create(
+      getWindow(),
+      "App parameters",
+      ci::app::toPixels(ci::ivec2( 200, 400)));
+
+  mParams->addParam( "Cube Size", &r )
+      .min( 0.1f )
+      .max( 10.0f )
+      .precision( 2 )
+      .step( 0.1f );
+
 }
 
 void IdealGasApp::draw() {
@@ -31,6 +43,7 @@ void IdealGasApp::draw() {
   reset_button_.DrawButton();
   pause_button_.DrawButton();
   simulator_.Draw();
+  mParams->draw();
 }
 
 void IdealGasApp::update() {

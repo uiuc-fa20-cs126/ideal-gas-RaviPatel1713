@@ -1,6 +1,5 @@
 #pragma  once
 
-#include "core/polygon_container.h"
 #include "cinder/gl/gl.h"
 #include <cmath>
 #include "cinder/Path2d.h"
@@ -8,11 +7,11 @@
 
 namespace idealgas{
 using glm::vec2;
-class SqrContainer{
+class Container{
 public:
-  SqrContainer() = default;
+  Container() = default;
 
-  SqrContainer(const vec2 &centeroid, double polygon_radius);
+  Container(const vec2 &centeroid, double polygon_radius);
 
   void Draw() const;
 

@@ -1,11 +1,15 @@
 #pragma  once
+
 #include "cinder/gl/gl.h"
+
 namespace idealgas{
 using glm::vec2;
-class ParticleModifier{
+
+
+class AppParamSettings {
 public:
-  ParticleModifier() = default;
-  ParticleModifier(const vec2 &pos, const vec2 &size);
+  AppParamSettings() = default;
+  AppParamSettings(const vec2 &pos, const vec2 &size);
 
   void DrawParticleModifierSection() const;
 
@@ -14,7 +18,6 @@ public:
 private:
   vec2 top_left_;
   vec2 bottom_right_;
-
   vec2 vel_;
 //  double mass_;
 //  double radius_;
