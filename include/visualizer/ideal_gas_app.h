@@ -35,7 +35,11 @@ private:
   AppButton pause_button_; // pause and unpause in the same button
   bool is_paused;
   params::InterfaceGlRef mParams;
-  double r;
+  double particle_mass_;
+  double particle_radius_;
+  unsigned particle_color_;
+
+
 
 //  std::vector<Histogram> h
 };

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "cinder/gl/gl.h"
-#include "core/app_param_settings.h"
 #include "core/container.h"
 #include <cinder/Path2d.h>
 namespace idealgas {
@@ -42,7 +41,9 @@ public:
    */
   void Clear();
 
-  void AddParticlesToContainer();
+  void AddParticlesToContainer(double mass, double radius, int color);
+
+  void ChangeContainer(unsigned shape);
 
 private:
   // private methods for rendering app title and other background components
@@ -54,7 +55,6 @@ private:
   vec2 container_top_left_corner_;
   double container_size_;
   Container container_;
-  AppParamSettings particle_settings_;
 };
 
 }  // namespace visualizer

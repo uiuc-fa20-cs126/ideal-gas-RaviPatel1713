@@ -24,16 +24,38 @@ void IdealGasApp::setup() {
   pause_button_ = AppButton("Pause", current_button_pos, button_size);
 
   mParams = ci::params::InterfaceGl::create(
-      getWindow(),
-      "App parameters",
-      ci::app::toPixels(ci::ivec2( 200, 400)));
+      getWindow(), "App parameters", ci::app::toPixels(ci::ivec2(200, 400)));
 
-  mParams->addParam( "Cube Size", &r )
-      .min( 0.1f )
-      .max( 10.0f )
-      .precision( 2 )
-      .step( 0.1f );
+  mParams->addText("Container Settings");
+  mParams->addText(" ");
+  mParams->addButton("Triangular", [&]() { simulator_.ChangeContainer(3); });
+  mParams->addButton("Rectangular (standard)",
+                     [&]() { simulator_.ChangeContainer(4); });
+  mParams->addButton("Pentagonal", [&]() { simulator_.ChangeContainer(5); });
+  mParams->addButton("Hexagonal", [&]() { simulator_.ChangeContainer(6); });
 
+  mParams->addSeparator();
+
+  mParams->addText(" ");
+  mParams->addText("Particle Settings");
+  mParams->addParam("mass", &particle_mass_)
+      .min(10.0f)
+      .max(40.0f)
+      .precision(2)
+      .step(0.1f);
+  mParams->addParam("radius", &particle_radius_)
+      .min(4.0f)
+      .max(10.0f)
+      .precision(2)
+      .step(0.1f);
+  mParams->addButton("Red", [&]() { particle_color_ = 0; });
+  mParams->addButton("Blue", [&]() { particle_color_ = 1; });
+  mParams->addButton("Green", [&]() { particle_color_ = 2; });
+
+  mParams->addSeparator();
+
+  mParams->addButton("PAUSE/UNPAUSE", [&]() { is_paused = !is_paused; });
+  mParams->addButton("RESET", [&]() { simulator_.Clear(); });
 }
 
 void IdealGasApp::draw() {
@@ -57,13 +79,11 @@ void IdealGasApp::mouseDown(ci::app::MouseEvent event) {
     simulator_.Clear();
   if(pause_button_.ClickedButton(event.getPos()))
     is_paused = !is_paused;
-  else
-    //TODO: add funtionality for simulation changes
-    return;
 }
 void IdealGasApp::keyDown(ci::app::KeyEvent event) {
   if( event.getCode() == ci::app::KeyEvent::KEY_SPACE ) {
-    simulator_.AddParticlesToContainer();
+    simulator_.AddParticlesToContainer(particle_mass_, particle_radius_,
+                                       particle_color_);
   }
 }
 }  // namespace visualizer

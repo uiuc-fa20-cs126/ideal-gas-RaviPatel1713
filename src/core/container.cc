@@ -1,4 +1,5 @@
 #include <core/container.h>
+#include <string>
 
 namespace idealgas {
 using cinder::Path2d;
@@ -6,24 +7,28 @@ using glm::vec2;
 
 #define PI 3.14159265
 
-Container::Container(const vec2 &centroid, const double polygon_radius)
-    : centroid_(centroid), polygon_radius_(polygon_radius) {
-  shape = 6;
+Container::Container(const vec2 &centeroid, double polygon_radius,
+                     unsigned shape) : centroid_(centeroid), polygon_radius_(polygon_radius), shape_(shape)
+{
   double current_degree = (shape%2 == 0) ? 2 * PI - PI / shape : -PI/2;
 
   for (unsigned i = 0; i < shape; ++i) {
     vec2 vertex(cos(current_degree) * (polygon_radius_),
                 sin(current_degree) * (polygon_radius_));
-    vertex += centroid;
+    vertex += centroid_;
     polygon_vertices_.push_back(vertex);
     current_degree -= 2 * PI / shape ;
   }
+  safe_radius = polygon_radius_ * cos(PI/shape);
 }
+
+Container::Container(const vec2 &centroid, const double polygon_radius)
+    : Container(centroid, polygon_radius, 4)  {}
 
 void Container::Draw() const {
   Path2d mPath;
   mPath.moveTo(polygon_vertices_[0]);
-  for (unsigned i = 1; i < shape; ++i) {
+  for (unsigned i = 1; i < shape_; ++i) {
     mPath.lineTo(polygon_vertices_[i]);
   }
   mPath.close();
@@ -35,13 +40,19 @@ void Container::Draw() const {
   }
 }
 
-void Container::AddParticles(const vec2 &c) {
-  particles.emplace_back(c, vec2( 2 , 1), 20, 7, "red");
+void Container::AddParticles(const vec2 &c, double mass, double radius, int color) {
+  ci::Color _color;
+  if(color == 0) _color = "red";
+  if(color == 1) _color = "blue";
+  if(color == 2) _color = "green";
+  particles.emplace_back(c, vec2( 2 , 2), mass, radius, _color);
 }
 
 void Container::Update() {
   for (int i = 0; i < particles.size(); ++i) {
-    WallCollisionDetected(particles[i]);
+    if (glm::distance(centroid_, particles[i].GetPos()) > safe_radius) {
+      WallCollisionDetected(particles[i]);
+    }
     for (int j = i + 1; j < particles.size(); ++j) {
       if (particles[i].Collide(particles[j])) {
         particles[i].UpdateVelocity(particles[j]);
@@ -79,5 +90,6 @@ bool Container::Inside(const vec2 &p_0, const vec2 &p, const vec2 &p_1) {
   return ((p.y - p_1.y) * (p_0.x - p_1.x) -
           (p.x - p_1.x) * (p_0.y - p_1.y)) >= 0;
 }
+
 
 } // namespace idealgas

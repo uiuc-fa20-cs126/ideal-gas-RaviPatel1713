@@ -18,11 +18,6 @@ Simulator::Simulator(double window_width,
   vec2 polygon_center(container_top_left_corner_
                       + vec2(container_size_/2, container_size_/2));
   container_ = Container(polygon_center,container_size_/2);
-
-
-  particle_settings_ = AppParamSettings(vec2(620, 350),
-                                        vec2(280, 380));
-
 }
 
 
@@ -62,36 +57,7 @@ void Simulator::Draw() const {
   PrintAppTitle();
   renderContent();
   container_.Draw();
-  particle_settings_.DrawParticleModifierSection();
-
-  /*
-   for(hist: histograms){
-    hist.Draw();
-   }
-   */
-
-/*
-//  vec2 pixel_bottom_right =
-//      container_top_left_corner_ + vec2(simulator_size_, simulator_size_);
-//  ci::Rectf pixel_bounding_box(top_left_corner_, pixel_bottom_right);
-//  ci::gl::drawStrokedRect(pixel_bounding_box);
-//  ci::gl::color(ci::Color("black"));
-//  ci::gl::drawStrokedRect(pixel_bounding_box);
-
-//  Path2d mPath;
-//  mPath.moveTo( vec2( 300.0f, 270.0f ) );
-//  mPath.curveTo(vec2( 400.0f, 270.0f ),
-//                vec2( 400.0f, 70.0f ),
-//                vec2( 500.0f, 70.0f ) );
-//  ci::gl::draw( mPath );
-
-
-
-//  for(int i = 0; i < particles.size(); ++i){
-//    ci::gl::color(ci::Color("red"));
-//    ci::gl::drawSolidCircle(particles[i].pos_, 5);
-//  }
-  */
+  
 }
 
 void Simulator::Clear() {
@@ -103,8 +69,16 @@ void Simulator::UpdateSimulation() {
   container_.Update();
 }
 
-void Simulator::AddParticlesToContainer() {
-  container_.AddParticles(vec2(350, 350));
+void Simulator::AddParticlesToContainer(double mass, double radius, int color) {
+  container_.AddParticles(vec2(350, 350), mass, radius, color);
+}
+void Simulator::ChangeContainer(unsigned int shape) {
+  if (shape < 3)
+    throw std::invalid_argument("The container has to have at least 3 sides.");
+  vec2 polygon_center(container_top_left_corner_
+                      + vec2(container_size_/2, container_size_/2));
+  container_ = Container(polygon_center,
+                         container_size_/2, shape);
 }
 
 }  // namespace visualizer

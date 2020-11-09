@@ -8,8 +8,8 @@ Particle::Particle(const vec2 &pos,
                    const ci::Color color)
     : pos_(pos)
     , vel_(vel)
-    , mass_(standard_config::kMass)
-    , radius_(standard_config::kRadius)
+    , mass_(mass)
+    , radius_(radius)
     , color_(color){
 }
 
