@@ -26,13 +26,11 @@ public:
 //  void Update() override;
    */
 private:
-  bool IsInside(Particle &particle);
-  int Orientation(const vec2 &p, const vec2 &q, const vec2 &r);
-  bool doIntersect(const vec2 &p1, const vec2 &q1,
-                   const vec2 &p2, const vec2 &q2);
-  bool OnSegment(const vec2 &p, const vec2 &q, const vec2 &r);
 
+  bool WallCollisionDetected(Particle &particle);
+  bool Inside(const vec2 &p_0, const vec2 &p, const vec2 &p_1);
   vec2 centroid_;
+  unsigned shape;
   double polygon_radius_;
   std::vector<vec2> polygon_vertices_;
   std::vector<Particle> particles;

@@ -16,8 +16,8 @@ private:
   vec2 bottom_right_;
 
   vec2 vel_;
-  double mass_;
-  double radius_;
+//  double mass_;
+//  double radius_;
   std::vector<std::string> particle_color_;
 };
 }

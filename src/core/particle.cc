@@ -11,7 +11,6 @@ Particle::Particle(const vec2 &pos,
     , mass_(standard_config::kMass)
     , radius_(standard_config::kRadius)
     , color_(color){
-  std::cout << radius_ << std::endl;
 }
 
 bool Particle::Collide(const Particle &other)  const {
@@ -43,9 +42,11 @@ void Particle::UpdatePosition() {
   pos_ += vel_;
 }
 
-vec2 &Particle::GetPos(){
-  return pos_;
-}
+
+vec2 Particle::GetPos() const { return pos_; }
+
+vec2 Particle::GetVel() const { return vel_; }
+void Particle::SetVel(const vec2 &v) { vel_ = v;}
 
 }
 

@@ -16,7 +16,10 @@ public:
 
   void UpdatePosition();
 
-  vec2 &GetPos();
+  vec2 GetPos() const;
+  vec2 GetVel() const;
+
+  void SetVel(const vec2 &v);
 
 private:
   vec2 pos_, vel_;

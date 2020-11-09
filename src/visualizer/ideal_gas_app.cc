@@ -6,7 +6,7 @@ namespace visualizer {
 
 IdealGasApp::IdealGasApp()
     : simulator_(standard_config::kWindowWidth,
-                 standard_config::kWindowHeight,
+//                 standard_config::kWindowHeight,
                  glm::vec2(standard_config::kMargin,
                                 standard_config::kMargin),
           standard_config::kContainerSize) {

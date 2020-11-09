@@ -14,7 +14,7 @@ void ParticleModifier::DrawParticleModifierSection() const {
           top_left_.y +  section.y/ 2),
       ci::Color("black"));
 
-  std::cout << radius_ << mass_;
+//  std::cout << radius_ << mass_;
 
 }
 

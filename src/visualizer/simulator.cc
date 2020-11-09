@@ -8,17 +8,18 @@ using glm::vec2;
 using cinder::Path2d;
 
 Simulator::Simulator(double window_width,
-                     double window_height,
+//                     double window_height,
                      const vec2 &top_left_corner,
                      double container_size)
       : window_width_(window_width)
-      , window_height_(window_height)
+//      , window_height_(window_height)
       , container_top_left_corner_(top_left_corner)
       , container_size_(container_size){
   vec2 polygon_center(container_top_left_corner_
                       + vec2(container_size_/2, container_size_/2));
   container_ = SqrContainer(polygon_center,container_size_/2);
-  std::cout << window_height_ << std::endl;
+
+
   particle_modifier_ = ParticleModifier(vec2(620, 350),
                                         vec2(280, 380));
 

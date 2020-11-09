@@ -24,7 +24,7 @@ public:
    *                            screen pixels
    */
   Simulator(double window_width,
-            double window_height,
+//            double window_height,
             const glm::vec2& top_left_corner,
             double simulator_size);
 
@@ -51,7 +51,7 @@ private:
   void renderContent() const;
 
   const double window_width_;
-  const double window_height_;
+//  const double window_height_;
   vec2 container_top_left_corner_;
   double container_size_;
   SqrContainer container_;
