@@ -4,7 +4,7 @@
 #include "cinder/gl/gl.h"
 #include "cinder/Path2d.h"
 #include "core/particle.h"
-
+#include "core/ideal_gas_app_config.h"
 namespace idealgas{
 class Container{
 public:
