@@ -6,8 +6,6 @@
 #include "core/histogram.h"
 namespace idealgas {
 namespace visualizer {
-using glm::vec2;
-
 /**
  * A simulator which render the particles movements and positioning in an ideal
  * gas simulation environment and respond to mouse events.
@@ -23,7 +21,7 @@ public:
    *                            screen pixels
    */
   Simulator(double window_width,
-//            double window_height,
+            double window_height,
             const glm::vec2& top_left_corner,
             double simulator_size);
 
@@ -47,16 +45,12 @@ public:
   void ChangeContainer(unsigned shape);
 
 private:
-  // private methods for rendering app title and other background components
-  void PrintAppTitle() const;
-  void renderContent() const;
-
   const double window_width_;
-//  const double window_height_;
+  const double window_height_;
   vec2 container_top_left_corner_;
   double container_size_;
   Container container_;
-  std::vector<Histogram> histograms;
+//  std::vector<Histogram> histograms;
 };
 
 }  // namespace visualizer

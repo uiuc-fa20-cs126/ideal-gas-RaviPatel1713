@@ -19,7 +19,7 @@ if(MSVC)
     add_compile_options(/W3 /WX)
 else()
     # lots of warnings and all warnings as errors
-    add_compile_options(-Wall -Wpedantic -Werror)
+#    add_compile_options(-Wall -Wpedantic -Werror)
 endif()
 
 # FetchContent added in CMake 3.11, downloads during the configure step
@@ -49,7 +49,6 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND CORE_SOURCE_FILES src/core/app_button.cc)
 list(APPEND CORE_SOURCE_FILES src/core/histogram.cc)
 list(APPEND CORE_SOURCE_FILES src/core/particle.cc)
 list(APPEND CORE_SOURCE_FILES src/core/ideal_gas_app_config.cc)

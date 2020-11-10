@@ -40,12 +40,12 @@ void Container::Draw() const {
   }
 }
 
-void Container::AddParticles(const vec2 &c, double mass, double radius, int color) {
+void Container::AddParticles(double mass, double radius, int color) {
   ci::Color _color;
   if(color == 0) _color = "red";
   if(color == 1) _color = "blue";
   if(color == 2) _color = "green";
-  particles.emplace_back(c, vec2( 2 , 2), mass, radius, _color);
+  particles.emplace_back(centroid_, vec2( 2 , 2), mass, radius, _color);
 }
 
 void Container::Update() {

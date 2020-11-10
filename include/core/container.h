@@ -1,12 +1,11 @@
 #pragma  once
 
-#include "cinder/gl/gl.h"
 #include <cmath>
+#include "cinder/gl/gl.h"
 #include "cinder/Path2d.h"
 #include "core/particle.h"
 
 namespace idealgas{
-using glm::vec2;
 class Container{
 public:
   Container() = default;
@@ -18,7 +17,7 @@ public:
 
   void Draw() const;
 
-  void AddParticles(const vec2 &c, double mass, double radius, int color);
+  void AddParticles(double mass, double radius, int color);
 
   void Update();
 private:
