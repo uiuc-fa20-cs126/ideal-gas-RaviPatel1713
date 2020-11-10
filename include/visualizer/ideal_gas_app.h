@@ -8,6 +8,11 @@
 #include "core/ideal_gas_app_config.h"
 #include "simulator.h"
 
+#include "cinder/gl/Texture.h"
+#include "cinder/Text.h"
+#include "cinder/gl/TextureFont.h"
+#include "cinder/Utilities.h"
+
 using namespace ci;
 using namespace ci::app;
 
@@ -22,6 +27,7 @@ namespace visualizer {
 class IdealGasApp : public ci::app::App {
  public:
   IdealGasApp();
+  ~IdealGasApp();
   void setup() override;
   void draw() override;
   void update() override;
@@ -35,6 +41,8 @@ private:
   double particle_mass_;
   double particle_radius_;
   unsigned particle_color_;
+  gl::TextureFontRef mTextureFont;
+
 };
 
 }  // namespace visualizer

@@ -18,34 +18,48 @@ Simulator::Simulator(double window_width,
   vec2 polygon_center(container_top_left_corner_ +
                       vec2(container_size_ / 2, container_size_ / 2));
   container_ = Container(polygon_center, container_size_ / 2);
-//  vec2 hist_size = vec2(200, 200);
-//  for (unsigned i = 0; i < 3; ++i) {
-//    histograms.emplace_back(
-//        vec2(window_width_ / 2 + hist_size.x,
-//             container_top_left_corner_.x + (hist_size.y + 50) * i),
-//        vec2(200, 200);
-//  }
+  vec2 hist_size = vec2(200, 200);
+  for (unsigned i = 0; i < 3; ++i) {
+    histograms.emplace_back(
+        vec2(window_width_ / 2 + hist_size.x,
+             container_top_left_corner_.x + (hist_size.y + 50) * i),
+        vec2(200, 200));
+  }
 }
 
 
 void Simulator::Draw() const {
-  // print app title
-  ci::gl::drawStringCentered(
-      standard_config::kAppTitle,
-     glm::vec2(window_width_ / 2, 25),
-      ci::Color(kBLACK));
-
   container_.Draw();
-//  for (const Histogram &h : histograms) { h.Draw(); }
+  for (const Histogram &h : histograms) {
+    h.Draw();
+  }
 }
 
 void Simulator::Clear() {
+  window_width_ = standard_config::kWindowWidth;
+  window_height_ = standard_config::kWindowHeight;
+  container_top_left_corner_ = vec2(standard_config::kMargin,
+                                    standard_config::kMargin);
+  container_size_ = standard_config::kContainerSize;
 
+  vec2 polygon_center(container_top_left_corner_ +
+                      vec2(container_size_ / 2, container_size_ / 2));
+  container_ = Container(polygon_center, container_size_ / 2);
+  vec2 hist_size = vec2(200, 200);
+  for (unsigned i = 0; i < 3; ++i) {
+    histograms.emplace_back(
+        vec2(window_width_ / 2 + hist_size.x,
+             container_top_left_corner_.x + (hist_size.y + 50) * i),
+        vec2(200, 200));
+  }
 }
 
 
 void Simulator::UpdateSimulation() {
   container_.Update();
+  for (unsigned i = 0; i < 3; ++i) {
+    histograms[i].Update(&container_.GetParticlesVec(), 10.0f * (i + 1));
+  }
 }
 
 void Simulator::AddParticlesToContainer(double mass, double radius, int color) {

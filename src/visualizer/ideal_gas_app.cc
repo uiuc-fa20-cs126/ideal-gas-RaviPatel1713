@@ -6,19 +6,23 @@ namespace visualizer {
 IdealGasApp::IdealGasApp()
     : simulator_(standard_config::kWindowWidth,
                  standard_config::kWindowHeight,
-                 glm::vec2(standard_config::kMargin,
-                                standard_config::kMargin),
-          standard_config::kContainerSize) {
+                glm::vec2
+                 ( standard_config::kMargin, standard_config::kMargin )
+                 , standard_config::kContainerSize ),
+      particle_mass_(particle_config::kMinMass),
+      particle_radius_(particle_config::kMinRadius),
+      particle_color_(0){
   ci::app::setWindowSize((int) standard_config::kWindowWidth,
                          (int) standard_config::kWindowHeight);
 }
 
 void IdealGasApp::setup() {
+  mTextureFont = gl::TextureFont::create( Font( "BigCaslon-Medium", 40 ) );
   mParams = ci::params::InterfaceGl::create(
       getWindow(), "App parameters", ci::app::toPixels(ci::ivec2(200, 400)));
 
   mParams->addText("Container Settings");
-  mParams->addText(" ");
+
   mParams->addButton("Triangular", [&]() { simulator_.ChangeContainer(3); });
   mParams->addButton("Rectangular (standard)",
                      [&]() { simulator_.ChangeContainer(4); });
@@ -27,7 +31,6 @@ void IdealGasApp::setup() {
 
   mParams->addSeparator();
 
-  mParams->addText(" ");
   mParams->addText("Particle Settings");
   mParams->addParam("mass", &particle_mass_)
       .min(10.0f)
@@ -46,12 +49,27 @@ void IdealGasApp::setup() {
   mParams->addSeparator();
 
   mParams->addButton("PAUSE/UNPAUSE", [&]() { is_paused = !is_paused; });
-  mParams->addButton("RESET", [&]() { simulator_.Clear(); });
+  mParams->addButton("RESET", [&](){
+    simulator_.Clear();
+    particle_mass_ = particle_config::kMinMass;
+    particle_radius_ = particle_config::kMinRadius;
+    particle_color_ = 0;
+  });
 }
 
 void IdealGasApp::draw() {
+
+
   ci::Color8u background_color(255,246,148);  // light yellow
   ci::gl::clear(background_color);
+
+  vec2 offset = vec2( 450, standard_config::kMargin );
+  Rectf boundsRect( getWindowWidth()/2 - 180, mTextureFont->getAscent(),
+                    getWindowWidth(),
+                    getWindowHeight());
+  gl::color( Color(kRED) );
+  mTextureFont->drawStringWrapped( standard_config::kAppTitle, boundsRect);
+
   simulator_.Draw();
   mParams->draw();
 }
@@ -70,6 +88,9 @@ void IdealGasApp::keyDown(ci::app::KeyEvent event) {
     simulator_.AddParticlesToContainer(particle_mass_, particle_radius_,
                                        particle_color_);
   }
+}
+IdealGasApp::~IdealGasApp() {
+//  TwTerminate();
 }
 }  // namespace visualizer
 

@@ -1,6 +1,7 @@
 #pragma  once
 #include "cinder/gl/gl.h"
 #include "ideal_gas_app_config.h"
+
 namespace idealgas{
 using glm::vec2;
 class Particle {

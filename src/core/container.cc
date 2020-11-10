@@ -90,6 +90,8 @@ bool Container::Inside(const vec2 &p_0, const vec2 &p, const vec2 &p_1) {
   return ((p.y - p_1.y) * (p_0.x - p_1.x) -
           (p.x - p_1.x) * (p_0.y - p_1.y)) >= 0;
 }
-
+const std::vector<Particle> &Container::GetParticlesVec() {
+  return particles;
+}
 
 } // namespace idealgas

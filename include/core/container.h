@@ -20,6 +20,8 @@ public:
   void AddParticles(double mass, double radius, int color);
 
   void Update();
+
+  const std::vector<Particle> &GetParticlesVec();
 private:
 
   bool WallCollisionDetected(Particle &particle);

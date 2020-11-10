@@ -45,12 +45,12 @@ public:
   void ChangeContainer(unsigned shape);
 
 private:
-  const double window_width_;
-  const double window_height_;
+  double window_width_;
+  double window_height_;
   vec2 container_top_left_corner_;
   double container_size_;
   Container container_;
-//  std::vector<Histogram> histograms;
+  std::vector<Histogram> histograms;
 };
 
 }  // namespace visualizer

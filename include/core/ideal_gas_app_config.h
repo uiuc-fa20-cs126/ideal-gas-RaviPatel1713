@@ -25,7 +25,7 @@ const double kContainerSize = 600.0f;
 const double kRadius = 10.0f;
 const double kMass = 40.0f;
 const double kMargin = 50.0f;
-const unsigned kHistogramBarCount = 10;
+const unsigned kHistogramBarCount = 5;
 
 
 
