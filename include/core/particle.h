@@ -39,7 +39,7 @@ public:
    * Updates a particle position.
    */
   void UpdatePosition();
-  
+
   void SetVel(const vec2 &v);
 
   vec2 GetPos() const;

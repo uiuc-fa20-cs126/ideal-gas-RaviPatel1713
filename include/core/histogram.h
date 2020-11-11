@@ -6,11 +6,25 @@ namespace idealgas{
 class Histogram{
 public:
   Histogram() = default;
+
+  /**
+   * Constructs a histogram at a specified position and size.
+   */
   Histogram(const vec2 &pos, const vec2 &size);
 
+  /**
+   * Draws the histograms.
+   */
   void Draw() const;
 
+  /**
+   * Updates histogram with specified mass.
+   */
   void Update(const std::vector<Particle> *particles, double mass);
+
+  /**
+   * Updates histogram with specified mass upper and lower bound.
+   */
   void Update(const std::vector<Particle> *particles,
               double mass_lower_bound,
               double mass_upper_bound);
