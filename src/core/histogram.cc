@@ -81,10 +81,6 @@ void Histogram::Update(const std::vector<Particle> *particles, double mass) {
       }
     }
   }
-//  for(unsigned bar = 0; bar < standard_config::kHistogramBarCount; ++bar){
-//    std::cout << speed_distribution_frequency_[bar] << std::endl;
-//  }
-
 }
 
 void Histogram::Update(const std::vector<Particle> *particles,

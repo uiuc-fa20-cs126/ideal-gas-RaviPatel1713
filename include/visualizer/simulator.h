@@ -7,48 +7,58 @@
 namespace idealgas {
 namespace visualizer {
 /**
- * A simulator which render the particles movements and positioning in an ideal
- * gas simulation environment and respond to mouse events.
+ * A simulator which render the particles movements and 3 speed distribution
+ * histograms for different masses in an ideal gas simulation environment and
+ * respond to mouse events.
  */
 class Simulator {
 public:
   /**
    * Creates a simulator.
    *
-   * @param top_left_corner     the screen coordinates of the top left corner of
-   *                            the simulator
-   * @param simulator_size      the size of the simulator, measured in
-   *                            screen pixels
+   * @param window_width the cinder application rendering window width
+   * @param window_height the cinder application rendering window height
+   * @param particle_container_radius the container created from a regular
+   *        polygon with a centroid and radius
    */
   Simulator(double window_width,
             double window_height,
-            const glm::vec2& top_left_corner,
-            double simulator_size);
+            double particle_container_radius);
 
   /**
-   * Displays the current state of the simulator in the Cinder application.
+   * Displays the current state of the simulator with histograms.
    */
   void Draw() const;
 
   /**
-  * Updates the particle positions and other simulation content.
+  * Updates the particle positions and histograms.
   */
   void UpdateSimulation();
 
   /**
-   * Erases all the particles in the simulator.
+   * Resets the simulator to its default settings.
    */
   void Clear();
 
+  /**
+   * Add particles into the ideal gas container environment.
+   * @param mass the mass of the particle to be added
+   * @param radius the radius of the particle to be added
+   * @param color the color of the particle to be added
+   */
   void AddParticlesToContainer(double mass, double radius, int color);
 
+  /**
+   * Changes the container polygon shape.
+   * @param shape the polygon shape of the container represented by unsigned
+   * int (for example, 3->triangular, 4->rectangular(square), and so on)
+   */
   void ChangeContainer(unsigned shape);
 
 private:
   double window_width_;
   double window_height_;
-  vec2 container_top_left_corner_;
-  double container_size_;
+  double particle_container_radius;
   Container container_;
   std::vector<Histogram> histograms;
 };

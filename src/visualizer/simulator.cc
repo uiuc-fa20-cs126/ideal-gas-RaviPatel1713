@@ -9,20 +9,17 @@ using cinder::Path2d;
 
 Simulator::Simulator(double window_width,
                      double window_height,
-                     const vec2 &top_left_corner,
                      double container_size)
     : window_width_(window_width)
     , window_height_(window_height)
-    , container_top_left_corner_(top_left_corner)
-    , container_size_(container_size) {
-  vec2 polygon_center(container_top_left_corner_ +
-                      vec2(container_size_ / 2, container_size_ / 2));
-  container_ = Container(polygon_center, container_size_ / 2);
+    , particle_container_radius(container_size) {
+  vec2 reg_polygon_container_centroid(window_width_/4, window_height_/2);
+  container_ = Container(reg_polygon_container_centroid, particle_container_radius);
   vec2 hist_size = vec2(200, 200);
   for (unsigned i = 0; i < 3; ++i) {
     histograms.emplace_back(
         vec2(window_width_ / 2 + hist_size.x,
-             container_top_left_corner_.x + (hist_size.y + 50) * i),
+             50 + (hist_size.y + 50) * i),
         vec2(200, 200));
   }
 }
@@ -38,18 +35,16 @@ void Simulator::Draw() const {
 void Simulator::Clear() {
   window_width_ = standard_config::kWindowWidth;
   window_height_ = standard_config::kWindowHeight;
-  container_top_left_corner_ = vec2(standard_config::kMargin,
-                                    standard_config::kMargin);
-  container_size_ = standard_config::kContainerSize;
+  particle_container_radius = standard_config::kContainerSize;
 
-  vec2 polygon_center(container_top_left_corner_ +
-                      vec2(container_size_ / 2, container_size_ / 2));
-  container_ = Container(polygon_center, container_size_ / 2);
+  vec2 reg_polygon_container_centroid(window_width_/4, window_height_/2);
+
+  container_ = Container(reg_polygon_container_centroid, particle_container_radius);
   vec2 hist_size = vec2(200, 200);
   for (unsigned i = 0; i < 3; ++i) {
     histograms.emplace_back(
         vec2(window_width_ / 2 + hist_size.x,
-             container_top_left_corner_.x + (hist_size.y + 50) * i),
+             50 + (hist_size.y + 50) * i),
         vec2(200, 200));
   }
 }
@@ -65,14 +60,11 @@ void Simulator::UpdateSimulation() {
 void Simulator::AddParticlesToContainer(double mass, double radius, int color) {
   container_.AddParticles(mass, radius, color);
 }
+
 void Simulator::ChangeContainer(unsigned int shape) {
-  if (shape < 3) {
-    throw std::invalid_argument("The container has to have at least 3 sides.");
-  }
-  vec2 polygon_center(container_top_left_corner_
-                      + vec2(container_size_/2, container_size_/2));
-  container_ = Container(polygon_center,
-                         container_size_/2, shape);
+  vec2 reg_polygon_container_centroid(window_width_/4, window_height_/2);
+  container_ = Container(reg_polygon_container_centroid,
+                         particle_container_radius, shape);
 }
 
 }  // namespace visualizer

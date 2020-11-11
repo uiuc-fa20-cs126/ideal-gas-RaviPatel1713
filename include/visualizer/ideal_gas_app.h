@@ -26,23 +26,45 @@ namespace visualizer {
  */
 class IdealGasApp : public ci::app::App {
  public:
+   /**
+    * Conctructs an app window for Ideal Gas Simulation.
+    */
   IdealGasApp();
-  ~IdealGasApp();
+
+  /**
+   * Initializes textureFont for app title and app parameter tweaker from
+   * cinder's sub-libraries called params::InterfaceGlRef.
+   */
   void setup() override;
+
+  /**
+   * Draws the app title, app param, container simulator and associated
+   * histograms.
+   */
   void draw() override;
+
+  /**
+   * Updates simulator state.
+   */
   void update() override;
-  void mouseDown(ci::app::MouseEvent event) override;
+
+  /**
+   * Used exclusively for adding particles to container
+   */
   void keyDown(ci::app::KeyEvent event) override;
 
 private:
   Simulator simulator_;
   bool is_paused;
+  /**cinder app param is a parameter tweaker for simulation to tweak with
+   * container and particle parameters and to pause/unpause and reset the
+   * simulation.
+   */
   params::InterfaceGlRef mParams;
   double particle_mass_;
   double particle_radius_;
   unsigned particle_color_;
   gl::TextureFontRef mTextureFont;
-
 };
 
 }  // namespace visualizer

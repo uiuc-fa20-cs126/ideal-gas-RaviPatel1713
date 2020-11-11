@@ -7,23 +7,46 @@ using glm::vec2;
 
 #define PI 3.14159265
 
+Container::Container(const std::vector<glm::vec2> &polygon_vertices)
+    : polygon_vertices_(polygon_vertices){}
+
 Container::Container(const vec2 &centeroid, double polygon_radius,
-                     unsigned shape) : centroid_(centeroid), polygon_radius_(polygon_radius), shape_(shape)
+                     unsigned shape)
+    : centroid_(centeroid),
+      polygon_radius_(polygon_radius),
+      shape_(shape)
 {
-  double current_degree = (shape%2 == 0) ? 2 * PI - PI / shape : -PI/2;
+  if (shape < 3) {
+    throw std::invalid_argument("The container has to have at least 3 sides.");
+  }
+  // the following settings for plotting a regular polygon are done since the
+  // xy coordinate system in computer programming different and starts at
+  // top left corner of a window and goes to bottom right for positive slope.
+
+
+  // for odd sided polygon defaults the first vertex starts at y-axis
+  double current_degree = -PI/2; // angle in rads w/r to centroid
+
+  if (shape%2 == 0){  //  for even sided regular polygon
+    // the counter-clockwise vertex plotting starts at first vertex before
+    // x-axis
+    current_degree = 2 * PI - PI / shape;
+  }
 
   for (unsigned i = 0; i < shape; ++i) {
     vec2 vertex(cos(current_degree) * (polygon_radius_),
                 sin(current_degree) * (polygon_radius_));
+    //
     vertex += centroid_;
     polygon_vertices_.push_back(vertex);
-    current_degree -= 2 * PI / shape ;
+    current_degree -= 2 * PI / shape ; // updates angle for next vertex
   }
   safe_radius = polygon_radius_ * cos(PI/shape);
 }
 
 Container::Container(const vec2 &centroid, const double polygon_radius)
-    : Container(centroid, polygon_radius, 4)  {}
+    : Container(centroid, polygon_radius, 4)
+{/*default shaped container*/}
 
 void Container::Draw() const {
   Path2d mPath;
@@ -32,7 +55,7 @@ void Container::Draw() const {
     mPath.lineTo(polygon_vertices_[i]);
   }
   mPath.close();
-  ci::gl::color(ci::Color("black"));
+  ci::gl::color(ci::Color(kBLACK));
   ci::gl::draw(mPath);
 
   for(unsigned i = 0; i < particles.size(); ++i){
@@ -42,10 +65,12 @@ void Container::Draw() const {
 
 void Container::AddParticles(double mass, double radius, int color) {
   ci::Color _color;
-  if(color == 0) _color = "red";
-  if(color == 1) _color = "blue";
-  if(color == 2) _color = "green";
-  particles.emplace_back(centroid_, vec2( 2 , 2), mass, radius, _color);
+  if(color == 0) _color = kRED;
+  if(color == 1) _color = kBLUE;
+  if(color == 2) _color = kGREEN;
+  particles.emplace_back(centroid_,
+                         particle_config::kStartingVel,
+                         mass, radius, _color);
 }
 
 void Container::Update() {
@@ -54,8 +79,8 @@ void Container::Update() {
       WallCollisionDetected(particles[i]);
     }
     for (int j = i + 1; j < particles.size(); ++j) {
-      if (particles[i].Collide(particles[j])) {
-        particles[i].UpdateVelocity(particles[j]);
+      if (particles[i].CollidedWith(particles[j])) {
+        particles[i].UpdateCollidedParticlesVelocities(particles[j]);
       }
     }
     particles[i].UpdatePosition();
@@ -75,7 +100,7 @@ bool Container::WallCollisionDetected(Particle &particle) {
     double n_length = glm::length(n);
     n = vec2(n.x / n_length, n.y / n_length);
 
-    if(!Inside(polygon_vertices_[i], p, polygon_vertices_[next]) &&
+    if(!HasInwardOrientation(polygon_vertices_[i], p, polygon_vertices_[next]) &&
         glm::dot(n, v) <  0){
       particle.SetVel(glm::reflect(v, n));
       return false;
@@ -86,12 +111,13 @@ bool Container::WallCollisionDetected(Particle &particle) {
   return true;
 }
 
-bool Container::Inside(const vec2 &p_0, const vec2 &p, const vec2 &p_1) {
-  return ((p.y - p_1.y) * (p_0.x - p_1.x) -
-          (p.x - p_1.x) * (p_0.y - p_1.y)) >= 0;
+bool Container::HasInwardOrientation(const vec2 &v_0, const vec2 &p, const vec2 &v_1) {
+  return ((p.y - v_1.y) * (v_0.x - v_1.x) -
+          (p.x - v_1.x) * (v_0.y - v_1.y)) >= 0;
 }
 const std::vector<Particle> &Container::GetParticlesVec() {
   return particles;
 }
+
 
 } // namespace idealgas

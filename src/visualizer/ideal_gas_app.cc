@@ -5,9 +5,10 @@ namespace visualizer {
 IdealGasApp::IdealGasApp()
     : simulator_(standard_config::kWindowWidth,
                  standard_config::kWindowHeight,
-                glm::vec2
-                 ( standard_config::kMargin, standard_config::kMargin )
-                 , standard_config::kContainerSize ),
+//                glm::vec2
+//                 ( standard_config::kMargin, standard_config::kMargin ),
+                 standard_config::kContainerSize ),
+
       particle_mass_(particle_config::kMinMass),
       particle_radius_(particle_config::kMinRadius),
       particle_color_(0){
@@ -57,11 +58,10 @@ void IdealGasApp::setup() {
 }
 
 void IdealGasApp::draw() {
-
-
   ci::Color8u background_color(255,246,148);  // light yellow
   ci::gl::clear(background_color);
 
+  // draws the app title
   vec2 offset = vec2( 450, standard_config::kMargin );
   Rectf boundsRect( getWindowWidth()/2 - 180, mTextureFont->getAscent(),
                     getWindowWidth(),
@@ -74,22 +74,17 @@ void IdealGasApp::draw() {
 }
 
 void IdealGasApp::update() {
-  if (!is_paused){
-    simulator_.UpdateSimulation();
-  }
+  if (!is_paused){ simulator_.UpdateSimulation(); }
 }
 
-void IdealGasApp::mouseDown(ci::app::MouseEvent event) {
-}
+
 
 void IdealGasApp::keyDown(ci::app::KeyEvent event) {
   if( event.getCode() == ci::app::KeyEvent::KEY_SPACE ) {
-    simulator_.AddParticlesToContainer(particle_mass_, particle_radius_,
+    simulator_.AddParticlesToContainer(particle_mass_,
+                                       particle_radius_,
                                        particle_color_);
   }
-}
-IdealGasApp::~IdealGasApp() {
-//  TwTerminate();
 }
 }  // namespace visualizer
 

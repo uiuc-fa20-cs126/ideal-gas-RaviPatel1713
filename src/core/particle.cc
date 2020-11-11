@@ -13,11 +13,11 @@ Particle::Particle(const vec2 &pos,
     , color_(color){
 }
 
-bool Particle::Collide(const Particle &other)  const {
+bool Particle::CollidedWith(const Particle &other) const {
   return (glm::distance(pos_, other.pos_) <= 14 &&
           glm::dot(vel_ - other.vel_, pos_ - other.pos_) < 0);
 }
-void Particle::UpdateVelocity(Particle &other) {
+void Particle::UpdateCollidedParticlesVelocities(Particle &other) {
   vec2 vec1_diff_vec2 = vel_ - other.vel_;
   vec2 pos1_diff_pos2 = pos_ - other.pos_;
   double mass_ratio;
@@ -46,6 +46,7 @@ void Particle::UpdatePosition() {
 vec2 Particle::GetPos() const { return pos_; }
 
 vec2 Particle::GetVel() const { return vel_; }
+
 void Particle::SetVel(const vec2 &v) { vel_ = v;}
 
 double Particle::GetMass() const { return mass_; }
