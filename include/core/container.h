@@ -1,11 +1,11 @@
-#pragma  once
+#pragma once
 
-#include <cmath>
-#include "cinder/gl/gl.h"
 #include "cinder/Path2d.h"
-#include "core/particle.h"
+#include "cinder/gl/gl.h"
 #include "core/ideal_gas_app_config.h"
-namespace idealgas{
+#include "core/test_particle.h"
+#include <cmath>
+namespace idealgas {
 class Container {
 public:
   Container() = default;
@@ -38,8 +38,6 @@ public:
    */
   Container(const std::vector<glm::vec2> &polygon_vertices);
 
-
-
   /**
    * Releases particles into the ideal gas container.
    */
@@ -67,6 +65,11 @@ public:
    */
   void Update();
 
+  //  getter methods
+  vec2 GetCentroid() const;
+  double GetPolygonRadius() const;
+  unsigned GetShape() const;
+  const std::vector<vec2> &GetPolygonVertices() const;
   const std::vector<Particle> &GetParticlesVec();
 
 private:

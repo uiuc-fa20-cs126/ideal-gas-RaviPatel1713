@@ -42,6 +42,7 @@ Container::Container(const vec2 &centeroid, double polygon_radius,
     current_degree -= 2 * PI / shape ; // updates angle for next vertex
   }
   safe_radius = polygon_radius_ * cos(PI/shape);
+  particles = std::vector<Particle>();
 }
 
 Container::Container(const vec2 &centroid, const double polygon_radius)
@@ -115,9 +116,19 @@ bool Container::HasInwardOrientation(const vec2 &v_0, const vec2 &p, const vec2 
   return ((p.y - v_1.y) * (v_0.x - v_1.x) -
           (p.x - v_1.x) * (v_0.y - v_1.y)) >= 0;
 }
-const std::vector<Particle> &Container::GetParticlesVec() {
-  return particles;
+
+vec2 Container::GetCentroid() const { return centroid_; }
+
+double Container::GetPolygonRadius() const { return polygon_radius_; }
+
+unsigned Container::GetShape() const { return shape_; }
+
+const std::vector<vec2> &Container::GetPolygonVertices() const {
+  return polygon_vertices_;
 }
 
+const std::vector<Particle>&Container::GetParticlesVec() {
+  return particles;
+}
 
 } // namespace idealgas

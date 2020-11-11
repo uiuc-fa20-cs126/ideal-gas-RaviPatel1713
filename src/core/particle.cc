@@ -1,4 +1,4 @@
-#include "core/particle.h"
+#include "core/test_particle.h"
 
 namespace idealgas{
 Particle::Particle(const vec2 &pos,

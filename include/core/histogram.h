@@ -1,6 +1,6 @@
 #pragma  once
 #include "cinder/gl/gl.h"
-#include "particle.h"
+#include "test_particle.h"
 #include <cmath>
 namespace idealgas{
 class Histogram{

@@ -12,6 +12,10 @@ const ci::Color kRED = "red";
 const ci::Color kGREEN = "green";
 
 namespace standard_config {
+const unsigned kTRIANGULAR = 3;
+const unsigned kSQUARE = 4;
+const unsigned kPENTAGONAL = 5;
+const unsigned kHEXAGONAL = 6;
 
 const std::string kAppTitle = "Ideal Gas Simulation";
 
