@@ -1,66 +1,75 @@
 #pragma once
 
 #include "cinder/gl/gl.h"
-#include "core/container.h"
-#include <cinder/Path2d.h>
-#include "core/histogram.h"
+
 namespace idealgas {
+using glm::vec2;
+
+struct Particle{
+  explicit Particle() = default;
+  explicit Particle(const vec2 &pos, const vec2 &vel) : pos_(pos), vel_(vel){}
+  vec2 pos_;
+  vec2 vel_;
+};
+
+
 namespace visualizer {
+
 /**
- * A simulator which render the particles movements and 3 speed distribution
- * histograms for different masses in an ideal gas simulation environment and
- * respond to mouse events.
+ * A simulator which render the particles movements and positioning in an ideal
+ * gas simulation environment and respond to mouse events.
  */
 class Simulator {
 public:
   /**
    * Creates a simulator.
    *
-   * @param window_width the cinder application rendering window width
-   * @param window_height the cinder application rendering window height
-   * @param particle_container_radius the container created from a regular
-   *        polygon with a centroid and radius
+   * @param top_left_corner     the screen coordinates of the top left corner of
+   *                            the simulator
+   * @param simulator_size      the size of the simulator, measured in
+   *                            screen pixels
    */
-  Simulator(double window_width,
-            double window_height,
-            double particle_container_radius);
+  Simulator(const glm::vec2& top_left_corner, double simulator_size);
 
   /**
-   * Displays the current state of the simulator with histograms.
+   * Displays the current state of the simulator in the Cinder application.
    */
   void Draw() const;
 
   /**
-  * Updates the particle positions and histograms.
-  */
-  void UpdateSimulation();
+   * Adds particles with current cursor position and default velocity in the
+   * simulation window.
+   */
+  void AddParticles(const glm::vec2 &pos);
 
   /**
-   * Resets the simulator to its default settings.
+   * Adds particles with specified position and velocity in the simulation window.
+   * Used for testing purposes.
+   */
+  void AddParticles(const glm::vec2 &pos, const glm::vec2 &vel);
+
+
+  /**
+  * Updates the particle position according to their current velocity.
+  */
+  void UpdateParticlePosition();
+
+  /**
+   * Erases all the particles in the simulator.
    */
   void Clear();
 
-  /**
-   * Add particles into the ideal gas container environment.
-   * @param mass the mass of the particle to be added
-   * @param radius the radius of the particle to be added
-   * @param color the color of the particle to be added
-   */
-  void AddParticlesToContainer(double mass, double radius, int color);
+  double GteSimulatorSize() const;
 
-  /**
-   * Changes the container polygon shape.
-   * @param shape the polygon shape of the container represented by unsigned
-   * int (for example, 3->triangular, 4->rectangular(square), and so on)
-   */
-  void ChangeContainer(unsigned shape);
+  const std::vector<Particle> &GetParticlesVector() const;
+
+  void SetParticleStartingVelocity(double x_dir, double y_dir);
 
 private:
-  double window_width_;
-  double window_height_;
-  double particle_container_radius;
-  Container container_;
-  std::vector<Histogram> histograms;
+  glm::vec2 top_left_corner_;
+  double simulator_size_;
+  std::vector<Particle> particles;
+  glm::vec2 particle_starting_vel_;
 };
 
 }  // namespace visualizer
